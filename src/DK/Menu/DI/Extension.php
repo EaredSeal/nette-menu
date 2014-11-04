@@ -69,7 +69,7 @@ class Extension extends CompilerExtension
 		$config = $this->getConfig($this->defaults)	;
 		$builder = $this->getContainerBuilder();
 
-		$autowired = count($config) === 1;
+		//$autowired = count($config) === 1;
 
 		foreach ($config as $name => $data) {
 			$data = Helpers::merge($data, $builder->expand($this->menuDefaults));
@@ -81,7 +81,7 @@ class Extension extends CompilerExtension
 			$menu = $builder->addDefinition($this->prefix($name))
 				->setClass('DK\Menu\Menu')
 				->setFactory('DK\Menu\DI\Extension::createMenu', array($name, $data['items']))
-				->setAutowired($autowired);
+				->setAutowired(FALSE);
 
 			if (($translator = $data['translator']) !== false) {
 				if ($translator === true) {
