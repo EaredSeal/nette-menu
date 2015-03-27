@@ -21,7 +21,7 @@ class Item extends Container
 	const ALLOWED_FOR_PARAMETERS = 'parameters';
 
 	const ALLOWED_FOR_ACL = 'acl';
-	
+
 	/** @var \DK\Menu\Menu */
 	private $menu;
 
@@ -51,7 +51,7 @@ class Item extends Container
 		self::ALLOWED_FOR_MODULE => null,
 		self::ALLOWED_FOR_PARAMETERS => array(),
 	);
-	
+
 	private $defaultAclPermission = 'view';
 
 	/** @var bool */
@@ -369,6 +369,10 @@ class Item extends Container
 	 */
 	public function getLink()
 	{
+		if(!$this->getTarget())
+		{
+			return "#";
+		}
 		if ($this->hasAbsoluteTarget()) {
 			return $this->getTarget();
 		} else {
@@ -383,7 +387,7 @@ class Item extends Container
 	public function hasAllowedForLoggedIn()
 	{
 		return $this->allowedFor[self::ALLOWED_FOR_LOGGED_IN] !== null;
-	}	
+	}
 
 
 	/**
@@ -433,7 +437,7 @@ class Item extends Container
 		$this->allowedFor[self::ALLOWED_FOR_ROLES] = $roles;
 		return $this;
 	}
-	
+
 
 	/**
 	 * @return bool
@@ -491,7 +495,7 @@ class Item extends Container
 		$this->allowedFor[self::ALLOWED_FOR_PARAMETERS] = $parameters;
 		return $this;
 	}
-	
+
 	/**
 	 * @return bool
 	 */
@@ -535,7 +539,7 @@ class Item extends Container
 		$resource = $acl['resource'];
 		$permission = isset($acl['permission']) ? $acl['permission'] : $this->defaultAclPermission;
 		return $this->getMenu()->getUser()->isAllowed($resource, $permission);
-		
+
 	}
 
 
@@ -590,7 +594,7 @@ class Item extends Container
 
 		return mb_substr($name, 0, $pos) === ucfirst($module);
 	}
-	
+
 
 	/**
 	 * @param array $parameters
@@ -649,7 +653,7 @@ class Item extends Container
 				$presenter = $this->getMenu()->getPresenter();
 
 				try {
-					$presenter->link($this->getTarget(), $this->getParameters());
+					@$presenter->link($this->getTarget(), $this->getParameters());
 				} catch (InvalidLinkException $e) {};
 
 				if ($presenter->getLastCreatedRequestFlag('current')) {
@@ -686,4 +690,4 @@ class Item extends Container
 		return $this->active;
 	}
 
-} 
+}
