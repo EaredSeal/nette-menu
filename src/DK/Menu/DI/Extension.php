@@ -145,7 +145,8 @@ class Extension extends CompilerExtension
 	 */
 	public static function createMenu($name, array $items, Application $application, User $user)
 	{
-		$menu = new Menu($user, $name);
+		$menu = new Menu($user, null);
+		$menu->setParent(null, $name);
 		$menu->init($application);
 
 		self::addItemsToParent($menu, $items);
